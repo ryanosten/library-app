@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       book_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       patron_id: {
         type: Sequelize.INTEGER

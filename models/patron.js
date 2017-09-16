@@ -1,4 +1,7 @@
 'use strict';
+
+var Loan = require('./loan.js').Loan;
+
 module.exports = function(sequelize, DataTypes) {
   var Patron = sequelize.define('Patron', {
     first_name: DataTypes.STRING,
@@ -8,11 +11,11 @@ module.exports = function(sequelize, DataTypes) {
     library_id: DataTypes.STRING,
     zip_code: DataTypes.INTEGER
   }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
+    timestamps: false
   });
+      Patron.associate = function(models) {
+        // associations can be defined here
+        Patron.hasMany(models.Loan, {foreignKey: 'patron_id'});
+    }
   return Patron;
 };

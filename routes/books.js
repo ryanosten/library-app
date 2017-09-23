@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Book = require("../models").Book;
 var Loan = require("../models").Loan;
+var Patron = require("../models").Patron;
 var moment = require('moment');
 
 const today = moment().format('YYYY[-]MM[-]DD');
@@ -9,14 +10,10 @@ const today = moment().format('YYYY[-]MM[-]DD');
 /* GET all books */
 router.get('/', function(req, res, next) {
   Book.findAll().then(function(books){
-    //console.log(books[0].dataValues);
-    //console.log(books[1].dataValues);
 
     let books_arr = books.map(function(item){
       return item.dataValues;
     });
-
-    console.log(books_arr);
 
     res.render('all_books', {books_arr: books_arr});
   });
@@ -25,18 +22,40 @@ router.get('/', function(req, res, next) {
 /* GET overdue Books*/
 
 router.get('/overdue', function(req, res, next) {
-  Loan.findAll({
-    where: {
-      returned_on: null,
-      return_by: {
-        lt: today
+  Book.findAll({
+    include: [
+      {
+        model: Loan,
+        where: {
+          returned_on: null,
+          return_by: {
+            lt: today
+          }
+        }
       }
-    }
+    ]
   })
-    .then((books_result) => {
-  let overdue_books = JSON.stringify(books_result);
-  console.log(JSON.parse(overdue_books));
-  res.send('a-ok');
+    .then(books => {
+      res.render('overdue_books', {books: books});
+  });
+});
+
+router.get('/checked_books', function(req, res, next) {
+  Book.findAll({
+    include: [
+      {
+        model: Loan,
+        where: {
+          returned_on: null,
+          loaned_on: {
+            ne: null
+          }
+        }
+      }
+    ]
+  })
+    .then(books => {
+      res.render('checked_books', {books: books});
   });
 });
 

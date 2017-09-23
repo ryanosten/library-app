@@ -8,11 +8,11 @@ block content
   |
   p
     | Filters
-    a(href='all_loans.html') All
+    a(href='/loans') All
     |  |
-    a(href='overdue_loans.html') Overdue
+    a(href='/loans/overdue') Overdue
     |  |
-    a(href='checked_loans.html') Checked Out
+    a(href='/loans/checked_loans') Checked Out
   |
   table
     thead
@@ -30,66 +30,19 @@ block content
         th Action
     |
     tbody
-      tr
-        td
-          a(href='book_detail.html') Emma
-        |
-        td
-          a(href='patron_detail.html') Dave McFarland
-        |
-        td 2015-12-10
-        |
-        td 2020-10-20
-        |
-        td
-        |
-        td
-          a.button(href='return_book.html') Return Book
-      |
-      tr
-        td
-          a(href='book_detail.html') Harry Potter and the Goblet of Fire
-        |
-        td
-          a(href='patron_detail.html') Andrew Chalkley
-        |
-        td 2015-12-11
-        |
-        td 2015-12-18
-        |
-        td
-        |
-        td
-          a.button(href='return_book.html') Return Book
-      |
-      tr
-        td
-          a(href='book_detail.html') A Brief History of Time
-        |
-        td
-          a(href='patron_detail.html') Andrew Chalkley
-        |
-        td 2015-12-12
-        |
-        td 2015-12-19
-        |
-        td
-        |
-        td
-          a.button(href='return_book.html') Return Book
-      |
-      tr
-        td
-          a(href='book_detail.html') The Universe in a Nutshell
-        |
-        td
-          a(href='patron_detail.html') Alena Holligan
-        |
-        td 2015-12-13
-        |
-        td 2015-12-20
-        |
-        td
-        |
-        td
-          a.button(href='return_book.html') Return Book
+      each loan in checked_loans
+        tr
+          td
+            a(href='book_detail.html') #{loan.book.title}
+          |
+          td
+            a(href='patron_detail.html') #{loan.patron.first_name} #{loan.patron.last_name}
+          |
+          td #{loan.loaned_on}
+          |
+          td #{loan.return_by}
+          |
+          td
+          |
+          td
+            a.button(href='return_book.html') Return Book

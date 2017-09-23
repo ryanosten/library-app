@@ -59,6 +59,19 @@ router.get('/checked_books', function(req, res, next) {
   });
 });
 
-//where return_by < DATE.now && returned_on == null
+router.get('/book_detail', function(req, res, next){
+  let book_id = req.query.id;
+  console.log(book_id);
+
+  Book.findAll({
+    where: {
+      id: book_id
+    }
+  })
+    .then(books => {
+      console.log(books);
+      res.render('book_detail', {books: books})
+    })
+})
 
 module.exports = router;

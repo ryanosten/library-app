@@ -13,13 +13,13 @@ block content
             a(href='/books/new') New Book
           |
           li
-            a(href='all_books.html') List All
+            a(href='/books') List All
           |
           li
-            a(href='/books?filter=overdue') List Overdue
+            a(href='/books/overdue') List Overdue
           |
           li
-            a(href='/books?filter=checked_out') List Checked Out
+            a(href='/books/checked_out') List Checked Out
       |
       li
         | Patrons
@@ -28,7 +28,7 @@ block content
             a(href='/patrons/new') New Patron
           |
           li
-            a(href='all_patrons.html') List All
+            a(href='/patrons') List All
       |
       li
         | Loans
@@ -37,10 +37,10 @@ block content
             a(href='new_loan.html') New Loan
           |
           li
-            a(href='all_loans.html') List All
+            a(href='/loans') List All
           |
           li
-            a(href='overdue_loans.html') List Overdue
+            a(href='loans/overdue') List Overdue
           |
           li
-            a(href='checked_loans.html') List Checked Out
+            a(href='loans/checked_loans') List Checked Out

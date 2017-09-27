@@ -1,59 +1,58 @@
 extends layout.pug
 
 block content
-  each book in books
-    h1 Book: #{book.title}
-    -var book = book
-      form
-        p
-          label(for='title') Title
-          input#title(type='text', value='' + book.title)
-        |
-        p
-          label(for='author') Author
-          input#author(type='text', value='' + book.author)
-        |
-        p
-          label(for='genre') Genre
-          input#genre(type='text', value='' + book.genre)
-        |
-        p
-          label(for='first_published') First Published
-          input#first_published(type='text', value='' + book.first_published)
-        |
-        p
-          input(type='submit', value='Update')
+  h1 Book: #{book.title}
+    form
+      p
+        label(for='title') Title
+        input#title(type='text', value='' + book.title)
       |
-      h2 Loan History
+      p
+        label(for='author') Author
+        input#author(type='text', value='' + book.author)
       |
-      table
-        thead
+      p
+        label(for='genre') Genre
+        input#genre(type='text', value='' + book.genre)
+      |
+      p
+        label(for='first_published') First Published
+        input#first_published(type='text', value='' + book.first_published)
+      |
+      p
+        input(type='submit', value='Update')
+    |
+    h2 Loan History
+    |
+    table
+      thead
+        tr
+          th Book
+          |
+          th Patron
+          |
+          th Loaned on
+          |
+          th Return by
+          |
+          th Returned on
+          |
+          th Action
+      |
+      tbody
+        each loan in loans
           tr
-            th Book
-            |
-            th Patron
-            |
-            th Loaned on
-            |
-            th Return by
-            |
-            th Returned on
-            |
-            th Action
-        |
-        tbody
-          tr
             td
-              a(href='book_detail.html') A Brief History of Time
+              a(href='book_detail.html') #{book.title}
             |
             td
-              a(href='patron_detail.html') Andrew Chalkley
+              a(href='patron_detail.html') #{loan.patron_id}
             |
-            td 2015-12-12
+            td #{loan.loaned_on}
             |
-            td 2015-12-19
+            td #{loan.return_by}
             |
-            td
+            td #{loan.returned_on}
             |
             td
               a.button(href='return_book.html') Return Book

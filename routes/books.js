@@ -60,17 +60,28 @@ router.get('/checked_books', function(req, res, next) {
 });
 
 router.get('/book_detail', function(req, res, next){
-  let book_id = req.query.id;
-  console.log(book_id);
+  let querystring = req.query.id;
+  console.log(querystring);
 
   Book.findAll({
     where: {
-      id: book_id
-    }
+      id: querystring
+    },
+    include: [
+      {
+        model: Loan,
+        where: {
+          book_id: querystring
+        }
+      }
+    ]
   })
-    .then(books => {
-      console.log(books);
-      res.render('book_detail', {books: books})
+    .then(book => {
+      book = book[0]
+      console.log(JSON.stringify(book));
+      let loans = book.Loans;
+      console.log(JSON.stringify(loans));
+      res.render('book_detail', {book: book, loans: loans})
     })
 })
 

@@ -60,13 +60,12 @@ router.get('/checked_books', function(req, res, next) {
 });
 
 router.get('/book_detail', function(req, res, next){
-  let querystring = req.query.id;
-  console.log(querystring);
+  const querystring = req.query.id;
 
-  Book.findAll({
+  const bookData = Book.findAll({
     where: {
       id: querystring
-    },
+    }/*,
     include: [
       {
         model: Loan,
@@ -74,8 +73,32 @@ router.get('/book_detail', function(req, res, next){
           book_id: querystring
         }
       }
+    ]*/
+  });
+
+  const loanData = Loan.findAll({
+    where: {
+      book_id: querystring
+    },
+    include:[
+      {
+        model: Patron,
+        as: 'patron'
+      }
     ]
+  });
+
+  Promise.all([
+    bookData,
+    loanData
+  ]).then(data => {
+    var book = data[0][0];
+    var loans = data[1];
+    console.log(book);
+    console.log(loans);
+    res.render('book_detail', {book: book, loans: loans});
   })
+/*
     .then(book => {
       book = book[0]
       console.log(JSON.stringify(book));
@@ -83,6 +106,7 @@ router.get('/book_detail', function(req, res, next){
       console.log(JSON.stringify(loans));
       res.render('book_detail', {book: book, loans: loans})
     })
+    */
 })
 
 module.exports = router;

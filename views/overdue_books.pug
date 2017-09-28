@@ -27,9 +27,10 @@ block content
     |
     tbody
       each book in books
+        -var book_id = book.id
         tr
           td
-            a(href='book_detail.html') #{book.title}
+            a(href='/books/book_detail?id=' + book_id) #{book.title}
           |
           td #{book.author}
           |

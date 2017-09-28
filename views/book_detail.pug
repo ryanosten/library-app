@@ -46,7 +46,7 @@ block content
               a(href='book_detail.html') #{book.title}
             |
             td
-              a(href='patron_detail.html') #{loan.patron_id}
+              a(href='patron_detail.html') #{loan.patron.first_name} #{loan.patron.last_name}
             |
             td #{loan.loaned_on}
             |

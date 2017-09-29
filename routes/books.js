@@ -65,15 +65,7 @@ router.get('/book_detail', function(req, res, next){
   const bookData = Book.findAll({
     where: {
       id: querystring
-    }/*,
-    include: [
-      {
-        model: Loan,
-        where: {
-          book_id: querystring
-        }
-      }
-    ]*/
+    }
   });
 
   const loanData = Loan.findAll({
@@ -94,19 +86,26 @@ router.get('/book_detail', function(req, res, next){
   ]).then(data => {
     var book = data[0][0];
     var loans = data[1];
-    console.log(book);
-    console.log(loans);
     res.render('book_detail', {book: book, loans: loans});
   })
-/*
-    .then(book => {
-      book = book[0]
-      console.log(JSON.stringify(book));
-      let loans = book.Loans;
-      console.log(JSON.stringify(loans));
-      res.render('book_detail', {book: book, loans: loans})
-    })
-    */
+});
+
+router.post('/update/:id', (req, res, next) => {
+  const book_id = req.params.id
+  const updates = req.body
+
+  Book.update({
+    title: req.body.title,
+    author: req.body.author,
+    genre: req.body.genre,
+    first_published: req.body.first_published
+  }, {
+    where: {
+      id: book_id
+    }
+  }).then( () => {
+    res.redirect('/books')
+  })
 })
 
 module.exports = router;

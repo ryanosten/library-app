@@ -2,22 +2,22 @@ extends layout.pug
 
 block content
   h1 Book: #{book.title}
-    form
+    form(method='POST' action='update/' + book.id)
       p
         label(for='title') Title
-        input#title(type='text', value='' + book.title)
+        input#title(type='text', value='' + book.title, name='title')
       |
       p
         label(for='author') Author
-        input#author(type='text', value='' + book.author)
+        input#author(type='text', value='' + book.author, name='author')
       |
       p
         label(for='genre') Genre
-        input#genre(type='text', value='' + book.genre)
+        input#genre(type='text', value='' + book.genre, name='genre')
       |
       p
         label(for='first_published') First Published
-        input#first_published(type='text', value='' + book.first_published)
+        input#first_published(type='text', value='' + book.first_published, name='first_published')
       |
       p
         input(type='submit', value='Update')
@@ -41,18 +41,20 @@ block content
       |
       tbody
         each loan in loans
-          tr
-            td
-              a(href='book_detail.html') #{book.title}
-            |
-            td
-              a(href='patron_detail.html') #{loan.patron.first_name} #{loan.patron.last_name}
-            |
-            td #{loan.loaned_on}
-            |
-            td #{loan.return_by}
-            |
-            td #{loan.returned_on}
-            |
-            td
-              a.button(href='return_book.html') Return Book
+          -var book_id = book.id
+            tr
+              td
+                a(href='/books/book_detail?id=' + book_id) #{book.title}
+              |
+              td
+                a(href='patron_detail.html') #{loan.patron.first_name} #{loan.patron.last_name}
+              |
+              td #{loan.loaned_on}
+              |
+              td #{loan.return_by}
+              |
+              td #{loan.returned_on}
+              |
+              td
+                if loan.loaned_on && !loan.returned_on
+                  a.button(href='return_book.html') Return Book

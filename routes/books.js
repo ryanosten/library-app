@@ -5,7 +5,8 @@ var Loan = require("../models").Loan;
 var Patron = require("../models").Patron;
 var moment = require('moment');
 
-const today = moment().format('YYYY[-]MM[-]DD');
+const date = new Date();
+const today = date.toISOString().slice(0,10).replace(/-/g,"-");
 
 /* GET all books */
 router.get('/', function(req, res, next) {
@@ -91,8 +92,7 @@ router.get('/book_detail', function(req, res, next){
 });
 
 router.post('/update/:id', (req, res, next) => {
-  const book_id = req.params.id
-  const updates = req.body
+  const book_id = req.params.id;
 
   Book.update({
     title: req.body.title,
@@ -107,5 +107,35 @@ router.post('/update/:id', (req, res, next) => {
     res.redirect('/books')
   })
 })
+
+router.get('/new', (req, res, next) => {
+  res.render('new_book');
+})
+
+router.post('/new', (req, res, next) => {
+
+  Book.create({
+    title: req.body.title,
+    author: req.body.author,
+    genre: req.body.genre,
+    first_published: req.body.first_published
+  }).then( () => {
+    res.redirect('/books');
+  })
+});
+
+router.get('/return/:id', (req, res, next) => {
+  const bookid = req.params.id
+
+  Loan.update({
+    returned_on: today
+  }, {
+    where: {
+      book_id: bookid
+    }
+  }).then( () => {
+    res.redirect('/books')
+  })
+});
 
 module.exports = router;
